@@ -2,6 +2,7 @@
 import datetime
 import json
 import requests
+import folium
 
 from models import Linha, Veiculo, Parada
 
@@ -202,9 +203,22 @@ class Inthegra_API():
 Inthegra_API.signin()   #Fazer login na API
 a = Inthegra_API.listar_veiculos()
 for i in a:
-    print(i)
+    print(i['Linha']['Veiculos'][0]['Lat'])
+
+mapa = folium.Map(location=[-5.0765337,-42.8108589],
+                  zoom_start=12,                                  
+                  )
+
+for linha in a:
+    folium.Marker(
+        [linha['Linha']['Veiculos'][0]['Lat'], linha['Linha']['Veiculos'][0]['Long']],
+        popup="Código do ônibus: "+linha["Linha"]['Veiculos'][0]['CodigoVeiculo'],
+        tooltip="Hora atualização: "+linha["Linha"]['Veiculos'][0]['Hora'],
+        ).add_to(mapa)
+
+mapa.save('mapa.html')
 
 
-print('Há {} veículos em rota neste momento!'.format(Inthegra_API.quantidade_veiculos_em_rota()))
+#print('Há {} veículos em rota neste momento!'.format(Inthegra_API.quantidade_veiculos_em_rota()))
 
 
