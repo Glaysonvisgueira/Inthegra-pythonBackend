@@ -221,4 +221,9 @@ mapa.save('mapa.html')
 
 #print('Há {} veículos em rota neste momento!'.format(Inthegra_API.quantidade_veiculos_em_rota()))
 
-
+#TODO Criar exceção para quando o serviço estiver fora do ar.
+#TODO Abrir o novo mapa direto no navegador padrão.
+#TODO Atualizar o posicionamento a cada 30 segundos.
+#TODO Alterar o ícone do marcador para um ícone de veículo.
+#TODO Demonstrar na tela a quantidade de veículos rastreados.
+#TODO Escolher linha de ônibus.
