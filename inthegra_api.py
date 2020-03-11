@@ -3,6 +3,7 @@ import datetime
 import json
 import requests
 import folium
+import webbrowser
 
 from models import Linha, Veiculo, Parada
 
@@ -209,15 +210,29 @@ mapa = folium.Map(location=[-5.0765337,-42.8108589],
                   zoom_start=12,                                  
                   )
 
+#Marcar posição do ponto com circulo
+def marcarPercursso(latitude, longitude):
+    folium.CircleMarker(
+        location=[latitude, longitude],
+        radius=5,
+        color='#3186cc',
+        fill=True,
+        fill_color='#3186cc'
+    ).add_to(mapa)
+    
+    
+percusso = []                 
 for linha in a:
     folium.Marker(
         [linha['Linha']['Veiculos'][0]['Lat'], linha['Linha']['Veiculos'][0]['Long']],
-        popup="Código do ônibus: "+linha["Linha"]['Veiculos'][0]['CodigoVeiculo'],
-        tooltip="Hora atualização: "+linha["Linha"]['Veiculos'][0]['Hora'],
+        tooltip="<strong>Linha: "+linha["Linha"]['Denomicao']+"</strong>"+" - Hora atualização: "+linha["Linha"]['Veiculos'][0]['Hora'],
         ).add_to(mapa)
+    percusso.append([linha['Linha']['Veiculos'][0]['Lat'], linha['Linha']['Veiculos'][0]['Long']])
+    for i in percusso:
+        marcarPercursso(i[0], i[1])
 
 mapa.save('mapa.html')
-
+webbrowser.open_new_tab('mapa.html')
 
 #print('Há {} veículos em rota neste momento!'.format(Inthegra_API.quantidade_veiculos_em_rota()))
 
